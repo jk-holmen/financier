@@ -10,7 +10,6 @@ import {
   Tooltip,
   Legend,
   Filler,
-  Interaction,
 } from 'chart.js';
 
 Chart.register(
