@@ -1,4 +1,30 @@
-import Chart from "chart.js";
+import {
+  Chart,
+  BarController,
+  BarElement,
+  LineController,
+  LineElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+  Filler,
+  Interaction,
+} from 'chart.js';
+
+Chart.register(
+  BarController,
+  BarElement,
+  LineController,
+  LineElement,
+  PointElement,
+  CategoryScale,
+  LinearScale,
+  Tooltip,
+  Legend,
+  Filler
+);
 
 angular
   .module("financier")
@@ -40,24 +66,17 @@ angular
               {
                 label: $translate.instant("NET_WORTH"),
                 type: "line",
-                tension: 0,
-                data: report.netWorth.map((amt) => getCurrencyValue(amt)),
-                fill: false,
+                borderColor: "rgba(136, 136, 136, 1)",
                 borderWidth: 1,
-                borderColor: "#888",
-                radius: 0,
-                yAxisID: "y-axis-1",
-              },
-              {
-                label: $translate.instant("NET_WORTH"),
-                type: "line",
-                borderColor: "rgba(0, 0, 0, 0)",
                 tension: 0,
                 data: report.netWorth.map((amt) => getCurrencyValue(amt)),
                 fill: true,
                 radius: 0,
+                mode: 'nearest',
                 backgroundColor: "rgba(255, 255, 0, 0.1)",
-                yAxisID: "y-axis-1",
+                pointHoverBorderWidth: 1,
+                pointHoverBorderColor: "rgba(136, 136, 136, 1)",
+                pointHoverRadius: 4, 
               },
               {
                 type: "bar",
@@ -68,7 +87,6 @@ angular
                 borderColor: "#ff4c4c",
                 hoverBackgroundColor: "#ff4c4c",
                 hoverBorderColor: "#ff4c4c",
-                yAxisID: "y-axis-1",
               },
               {
                 type: "bar",
@@ -79,7 +97,6 @@ angular
                 borderColor: "#93c776",
                 hoverBackgroundColor: "#93c776",
                 hoverBorderColor: "#93c776",
-                yAxisID: "y-axis-1",
               },
             ],
           };
@@ -90,28 +107,39 @@ angular
             options: {
               responsive: true,
               maintainAspectRatio: false,
-              tooltips: {
-                mode: "label",
-                callbacks: {
-                  label: function (tooltipItems, data) {
-                    if (tooltipItems.datasetIndex === 1) {
-                      return;
+              interaction: {
+                mode: 'index',
+              },
+              plugins: {
+                tooltip: {
+                  mode: "index",
+                  callbacks: {
+                    title: function (context) {
+                      return capitalize(dateFilter(report.months[context[0].dataIndex], "MMM ''yy"));
+                    },
+                    label: function (context) {
+                      const dataset = context.dataset;
+                      const value = context.parsed.y;
+                      console.log(context)
+                      
+                      return (
+                        dataset.label +
+                        ": " +
+                        currency(
+                          value,
+                          scope.$parent.dbCtrl.currencySymbol,
+                          scope.$parent.dbCtrl.currencyDigits,
+                        )
+                      );
+                    },
+                    labelColor: function (context) {
+                      if (context.datasetIndex === 0) return {backgroundColor: "rgba(0, 0, 0, 1)"}
                     }
-
-                    return (
-                      data.datasets[tooltipItems.datasetIndex].label +
-                      ": " +
-                      currency(
-                        tooltipItems.yLabel,
-                        scope.$parent.dbCtrl.currencySymbol,
-                        scope.$parent.dbCtrl.currencyDigits,
-                      )
-                    );
                   },
                 },
-              },
-              legend: {
-                display: false,
+                legend: {
+                  display: false,
+                },
               },
               elements: {
                 line: {
@@ -119,33 +147,21 @@ angular
                 },
               },
               scales: {
-                xAxes: [
-                  {
+                x: {
                     display: true,
-                    gridLines: {
+                    grid: {
                       display: false,
-                    },
-                    labels: {
-                      show: true,
                     },
                     ticks: {
                       callback: (date) => {
-                        return capitalize(dateFilter(date, "MMM ''yy"));
+                        return capitalize(dateFilter(report.months[date], "MMM ''yy"));
                       },
                     },
                   },
-                ],
-                yAxes: [
-                  {
-                    type: "linear",
+                y: {
                     display: true,
-                    position: "left",
-                    id: "y-axis-1",
-                    gridLines: {
+                    grid: {
                       display: true,
-                    },
-                    labels: {
-                      show: true,
                     },
                     ticks: {
                       beginAtZero: true,
@@ -158,7 +174,6 @@ angular
                       },
                     },
                   },
-                ],
               },
             },
           });
