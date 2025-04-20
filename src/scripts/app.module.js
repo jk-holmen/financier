@@ -31,6 +31,7 @@ import accountHtml from "../views/account.html?raw";
 import reportsHtml from "../views/reports.html?raw";
 import heatMapHtml from "../views/reports/heatMap.html?raw";
 import netWorthHtml from "../views/reports/netWorth.html?raw";
+import treeMapHtml from "../views/reports/treeMap.html?raw";
 import NotFoundHtml from "../views/404.html?raw";
 
 import en from "../assets/translations/en.json";
@@ -288,6 +289,13 @@ financier.config(
         template: netWorthHtml,
         onEnter: ($rootScope) => {
           $rootScope.lastOpenedReport = "netWorth";
+        },
+      })
+      .state("user.app.manager.view.reports.treeMap", {
+        url: "/tree-map",
+        template: treeMapHtml,
+        onEnter: ($rootScope) => {
+          $rootScope.lastOpenedReport = "treeMap";
         },
       })
       .state("404", {

@@ -294,6 +294,7 @@
   "BACKUP_NAME": "{{name}} (Backup {{date}})",
   "BACKUP_FILE_CORRUPTED": "Backup file is corrupted.",
   "HEAT_MAP": "Heat map",
+  "TREE_MAP": "Tree map",
   "LAST_12_MONTHS": "Last 12 months",
   "BACK_TO_WEBSITE": "Back to financier.io",
   "VERSION_INFORMATION": "Version {{number}} ({{date}})",

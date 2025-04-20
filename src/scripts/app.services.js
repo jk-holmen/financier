@@ -24,3 +24,5 @@ import "./services/flags.js";
 import "./services/backup.js";
 
 import "./services/reports/netWorth.js";
+import "./services/reports/treeMap.js";
+

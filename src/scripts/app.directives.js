@@ -15,6 +15,7 @@ import "./directives/account/checkNumberInput.js";
 import "./directives/account/notInsaneDateValidator.js";
 
 import "./directives/reports/netWorthChart.js";
+import "./directives/reports/treeMapChart.js";
 
 import "./directives/calcInput.js";
 import "./directives/autofocus.js";

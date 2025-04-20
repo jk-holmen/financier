@@ -26,7 +26,7 @@
   animation: slideOutRight 0.5s both ease;
 }
 
-$reports: "netWorth" "heatMap";
+$reports: "netWorth" "heatMap" "treeMap";
 
 @each $report-name in $reports {
   .state-user-app-manager-view-budget
